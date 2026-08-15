@@ -1,0 +1,10 @@
+img {
+  max-width: 320px;
+  height: auto;
+  display: block;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #b80a2a;
+}

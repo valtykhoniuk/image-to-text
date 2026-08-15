@@ -1,1 +1,21 @@
-<p>Image to Text</p>
+<section>
+  <p>Image to Text</p>
+  <input
+    type="file"
+    name="image_input"
+    accept=".jpeg, .jpg, .png"
+    (change)="onFileSelected($event)"
+  />
+
+  @if (selectedFile) {
+    <p>Selected: {{ selectedFile.name }}</p>
+  }
+
+  @if (previewUrl) {
+    <img [src]="previewUrl" alt="Selected image preview" />
+  }
+
+  @if (errorMessage) {
+    <p class="error">{{ errorMessage }}</p>
+  }
+</section>
