@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  /* Palette */
+  --color-rosy-taupe: #c5979d;
+  --color-dark-cyan: #4b8f8c;
+  --color-dusty-grape: #484d6d;
+  --color-twilight-indigo: #2c365e;
+  --color-midnight-violet: #2b193d;
+
+  /* Text */
+  --color-text: #f3e6e8;
+  --color-text-soft: #e8d4d7;
+  --color-text-muted: var(--color-rosy-taupe);
+  --color-text-on-cyan: #f7fbfb;
+  --color-error: #f0b4bc;
+
+  /* Surfaces / borders (with opacity) */
+  --color-surface: color-mix(in srgb, var(--color-twilight-indigo) 55%, transparent);
+  --color-surface-hover: color-mix(in srgb, var(--color-dusty-grape) 70%, transparent);
+  --color-border: color-mix(in srgb, var(--color-rosy-taupe) 35%, transparent);
+  --color-border-soft: color-mix(in srgb, var(--color-rosy-taupe) 25%, transparent);
+  --color-border-subtle: color-mix(in srgb, var(--color-rosy-taupe) 22%, transparent);
+  --color-shadow: color-mix(in srgb, var(--color-midnight-violet) 35%, transparent);
+  --color-bg-start: var(--color-midnight-violet);
+  --color-bg-end: var(--color-twilight-indigo);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Outfit", system-ui, sans-serif;
+  color: var(--color-text);
+  background: linear-gradient(180deg, var(--color-bg-start), var(--color-bg-end));
+  background-attachment: fixed;
+}

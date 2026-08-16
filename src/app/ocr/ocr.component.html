@@ -1,30 +1,46 @@
-<section>
-  <p>Image to Text</p>
-  <input
-    type="file"
-    name="image_input"
-    accept=".jpeg, .jpg, .png"
-    (change)="onFileSelected($event)"
-  />
+<section class="ocr">
+  <h1>Image to Text</h1>
+  <p class="hint">Upload a JPEG or PNG image up to 2 MB.</p>
+
+  <label class="file-label">
+    Choose image
+    <input
+      type="file"
+      accept=".jpeg,.jpg,.png,image/jpeg,image/png"
+      (change)="onFileSelected($event)"
+    />
+  </label>
 
   @if (selectedFile) {
-    <p>Selected: {{ selectedFile.name }}</p>
+    <p class="file-name">Selected: {{ selectedFile.name }}</p>
   }
 
   @if (previewUrl) {
-    <img [src]="previewUrl" alt="Selected image preview" />
+    <img [src]="previewUrl" alt="Selected image preview" class="preview" />
   }
 
   @if (errorMessage) {
     <p class="error">{{ errorMessage }}</p>
   }
 
-  <button type="button" [disabled]="!selectedFile || isLoading" (click)="extractText()">
-    {{ isLoading ? 'Extracting..' : 'Extract text' }}
+  <button
+    type="button"
+    class="btn"
+    [disabled]="!selectedFile || isLoading"
+    (click)="extractText()"
+  >
+    {{ isLoading ? 'Extracting...' : 'Extract text' }}
   </button>
 
   @if (extractedText) {
-    <pre>{{ extractedText }}</pre>
-    <button type="button" (click)="copyText()">{{ copyLabel }}</button>
+    <div class="result">
+      <div class="result-header">
+        <h2>Extracted text</h2>
+        <button type="button" class="btn btn-secondary" (click)="copyText()">
+          {{ copyLabel }}
+        </button>
+      </div>
+      <p class="result-text">{{ extractedText }}</p>
+    </div>
   }
 </section>

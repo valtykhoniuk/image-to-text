@@ -4,7 +4,7 @@ import { allowedTypes, maxSizeBytes } from '../constants';
 import { OcrService } from './ocr';
 
 @Component({
-  selector: 'app-ocr-component',
+  selector: 'app-ocr',
   imports: [],
   templateUrl: './ocr.component.html',
   styleUrl: './ocr.component.css',
@@ -28,6 +28,7 @@ export class OcrComponent {
     this.previewUrl = null;
     this.errorMessage = null;
     this.extractedText = null;
+    this.copyLabel = 'Copy';
 
     if (!file) {
       return;
@@ -46,6 +47,7 @@ export class OcrComponent {
     }
 
     this.selectedFile = file;
+
     const reader = new FileReader();
     reader.onload = () => {
       this.previewUrl = reader.result as string;
@@ -54,7 +56,7 @@ export class OcrComponent {
     reader.readAsDataURL(file);
   }
 
-  extractText() {
+  extractText(): void {
     if (!this.selectedFile) {
       return;
     }
@@ -62,6 +64,7 @@ export class OcrComponent {
     this.isLoading = true;
     this.extractedText = null;
     this.errorMessage = null;
+    this.copyLabel = 'Copy';
 
     this.ocrService.extractText(this.selectedFile).subscribe({
       next: (items) => {
@@ -97,14 +100,20 @@ export class OcrComponent {
       return;
     }
 
-    navigator.clipboard.writeText(this.extractedText).then(() => {
-      this.copyLabel = 'Copied';
-      this.cdr.markForCheck();
-
-      setTimeout(() => {
-        this.copyLabel = 'Copy';
+    navigator.clipboard.writeText(this.extractedText).then(
+      () => {
+        this.copyLabel = 'Copied!';
         this.cdr.markForCheck();
-      }, 2000);
-    });
+
+        setTimeout(() => {
+          this.copyLabel = 'Copy';
+          this.cdr.markForCheck();
+        }, 2000);
+      },
+      () => {
+        this.errorMessage = 'Could not copy text to clipboard.';
+        this.cdr.markForCheck();
+      },
+    );
   }
 }

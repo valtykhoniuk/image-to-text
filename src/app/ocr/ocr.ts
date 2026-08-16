@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OcrItem } from './ocr.model';
 import { apiUrl } from '../constants';
-import { enviroment } from '../../enviroments/enviroment';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class OcrService {
 
     return this.http.post<OcrItem[]>(apiUrl, formData, {
       headers: {
-        'X-Api-Key': enviroment.apiNinjasKey,
+        'X-Api-Key': environment.apiNinjasKey,
       },
     });
   }

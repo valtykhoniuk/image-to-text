@@ -30,7 +30,7 @@ yarn-error.log
 .history/*
 
 # API keys
-src/enviroments/enviroment.ts
+src/environments/environment.ts
 
 # Miscellaneous
 /.angular/cache
