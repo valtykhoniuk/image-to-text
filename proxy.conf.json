@@ -1,0 +1,7 @@
+{
+  "/v1": {
+    "target": "https://api.api-ninjas.com",
+    "secure": true,
+    "changeOrigin": true
+  }
+}

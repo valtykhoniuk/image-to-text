@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { allowedTypes, maxSizeBytes } from '../constants';
+import { OcrService } from './ocr';
 
 @Component({
   selector: 'app-ocr-component',
@@ -11,6 +13,11 @@ export class OcrComponent {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   errorMessage: string | null = null;
+  extractedText: string | null = null;
+  isLoading = false;
+
+  private readonly ocrService = inject(OcrService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -19,6 +26,7 @@ export class OcrComponent {
     this.selectedFile = null;
     this.previewUrl = null;
     this.errorMessage = null;
+    this.extractedText = null;
 
     if (!file) {
       return;
@@ -40,7 +48,46 @@ export class OcrComponent {
     const reader = new FileReader();
     reader.onload = () => {
       this.previewUrl = reader.result as string;
+      this.cdr.markForCheck();
     };
     reader.readAsDataURL(file);
+  }
+
+  extractText() {
+    if (!this.selectedFile) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.extractedText = null;
+    this.errorMessage = null;
+
+    this.ocrService.extractText(this.selectedFile).subscribe({
+      next: (items) => {
+        if (!Array.isArray(items)) {
+          this.errorMessage = 'Could not extract text. Please try again.';
+          this.isLoading = false;
+          this.cdr.markForCheck();
+          return;
+        }
+
+        const text = items
+          .map((item) => item.text)
+          .join(' ')
+          .trim();
+        this.extractedText = text || 'No text found in this image.';
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+      error: (err: HttpErrorResponse) => {
+        const apiError = err.error?.error;
+        this.errorMessage =
+          typeof apiError === 'string'
+            ? apiError
+            : 'Could not extract text. Please try again.';
+        this.isLoading = false;
+        this.cdr.markForCheck();
+      },
+    });
   }
 }
