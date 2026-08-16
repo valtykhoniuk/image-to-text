@@ -15,6 +15,7 @@ export class OcrComponent {
   errorMessage: string | null = null;
   extractedText: string | null = null;
   isLoading = false;
+  copyLabel = 'Copy';
 
   private readonly ocrService = inject(OcrService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -88,6 +89,22 @@ export class OcrComponent {
         this.isLoading = false;
         this.cdr.markForCheck();
       },
+    });
+  }
+
+  copyText(): void {
+    if (!this.extractedText) {
+      return;
+    }
+
+    navigator.clipboard.writeText(this.extractedText).then(() => {
+      this.copyLabel = 'Copied';
+      this.cdr.markForCheck();
+
+      setTimeout(() => {
+        this.copyLabel = 'Copy';
+        this.cdr.markForCheck();
+      }, 2000);
     });
   }
 }

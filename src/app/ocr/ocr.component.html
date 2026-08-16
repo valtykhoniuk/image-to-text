@@ -20,10 +20,11 @@
   }
 
   <button type="button" [disabled]="!selectedFile || isLoading" (click)="extractText()">
-    {{ isLoading ? 'Extracting...' : 'Extract text' }}
+    {{ isLoading ? 'Extracting..' : 'Extract text' }}
   </button>
 
   @if (extractedText) {
     <pre>{{ extractedText }}</pre>
+    <button type="button" (click)="copyText()">{{ copyLabel }}</button>
   }
 </section>
